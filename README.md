@@ -4,6 +4,7 @@ Models and scripts for Li, Rahmandad & Sterman (2020), Improving Parameter Estim
 Language: 
 
   Model -> Vensim
+  
   Script -> python
         
 --> change parameters in param.py
