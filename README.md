@@ -14,3 +14,5 @@ Language:
            EDIT vensim_path AND script_path_0 BEFORE LOCAL USAGE!!! 
            
 --> run experiments: python3 run_s1_s2.py / run_s3.py / run_s4.py
+
+--> find results in OUTPUT folder
