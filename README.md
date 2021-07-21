@@ -1,5 +1,7 @@
 # LRS_Estimation
-Models and scripts for Li, Rahmandad & Sterman (2020), Improving Parameter Estimation of Epidemic Models: Likelihood Functions and Kalman Filtering
+Models and scripts for 
+
+Li, Rahmandad & Sterman (2020), Improving Parameter Estimation of Epidemic Models: Likelihood Functions and Kalman Filtering
 
 Language: 
 
