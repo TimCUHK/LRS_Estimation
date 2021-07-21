@@ -1,0 +1,440 @@
+{UTF-8}
+MCMC payoff EIR  = A FUNCTION OF( Exposed,Infected,Removed) ~~|
+MCMC payoff EIR=
+	(Exposed-Exposed Data)^2 + (Infected-Infected Data)^2 + (Removed-Removed Data)^2
+	~	people*people
+	~		|
+
+MCMC payoff I  = A FUNCTION OF( Infected) ~~|
+MCMC payoff I=
+	(Infected-Infected Data)^2
+	~	people*people
+	~		|
+
+MCMC payoff IR  = A FUNCTION OF( ) ~~|
+MCMC payoff IR=
+	MAX((Infected Recovered - Infected Removed Data)^2, 1e-06)
+	~	people*people
+	~		|
+
+Drive Variance in RR  = A FUNCTION OF( Drive Variance in Noise P,Expected RR,Noise Amp R\
+		,Unit for Rate) ~~|
+Drive Variance in RR=
+	MAX(1e-06,SW Random P*Expected RR*Unit for Rate + SW Random N*Noise Amp R^2*Drive Variance in Noise P\
+		*(Expected RR^2+Expected RR
+*
+	Unit for Rate))
+	~	people*people/(day*day)
+	~		|
+
+Drive Variance in RR partial  = A FUNCTION OF( Drive Variance in Noise P,Expected RR,\
+		Noise Amp R,Unit for Rate) ~~|
+Drive Variance in RR partial=
+	MAX(1e-06,SW Random N*Noise Amp R*Drive Variance in Noise P*(Expected RR^2+Expected RR\
+		*Unit for Rate)^0.5)
+	~	people/day
+	~		|
+
+Drive Variance in ER partial  = A FUNCTION OF( Drive Variance in Noise P,Expected ER,\
+		Noise Amp R,Unit for Rate) ~~|
+Drive Variance in ER partial=
+	MAX(1e-06,SW Random N*Noise Amp R*Drive Variance in Noise P*(Expected ER^2+Expected ER\
+		*Unit for Rate)^0.5)
+	~	people/day
+	~		|
+
+Drive Variance in IR  = A FUNCTION OF( Drive Variance in Noise P,Expected IR,Noise Amp R\
+		,Unit for Rate) ~~|
+Drive Variance in IR=
+	MAX(1e-06,SW Random P*Expected IR*Unit for Rate + SW Random N*Noise Amp R^2*Drive Variance in Noise P\
+		*(Expected IR^2+Expected IR
+	*
+	Unit for Rate))
+	~	people*people/(day*day)
+	~		|
+
+Drive Variance in IR partial  = A FUNCTION OF( Drive Variance in Noise P,Expected IR,\
+		Noise Amp R,Unit for Rate) ~~|
+Drive Variance in IR partial=
+	MAX(1e-06,SW Random N*Noise Amp R*Drive Variance in Noise P*(Expected IR^2+Expected IR\
+		*Unit for Rate)^0.5)
+	~	people/day
+	~		|
+
+Drive Variance in Noise P  = A FUNCTION OF( Drive Variance in Noise W,TIME STEP) ~~|
+Drive Variance in Noise P=
+	0*Drive Variance in Noise W*(TIME STEP^2/(TIME STEP^2+Noise correlation time^2)) + Autocorrelated Noise STD\
+		^2
+	~	Dmnl
+	~		|
+
+Drive Variance in Noise W  = A FUNCTION OF( TIME STEP) ~~|
+Drive Variance in Noise W=
+	Autocorrelated Noise STD^2*(24*Noise correlation time/TIME STEP)*0.0833
+	~	Dmnl
+	~		|
+
+Drive Variance in ER  = A FUNCTION OF( Drive Variance in Noise P,Expected ER,Noise Amp R\
+		,Unit for Rate) ~~|
+Drive Variance in ER=
+	MAX(1e-06,SW Random P*Expected ER*Unit for Rate + SW Random N*Noise Amp R^2*Drive Variance in Noise P\
+		*(Expected ER^2+Expected ER
+	*Unit for Rate
+	))
+	~	people*people/day/day
+	~		|
+
+Noise P Initial Variance=
+	1e+06
+	~	Dmnl
+	~		|
+
+CovEP=
+	TIME STEP*(Drive Variance in ER partial+Drive Variance in IR partial)
+	~	people
+	~		|
+
+CovIP=
+	TIME STEP*(Drive Variance in IR partial+Drive Variance in RR partial)
+	~	people
+	~		|
+
+Exposed Data Variance=
+	MAX(Noise Amp D^2*Drive Variance in Noise P*scaling constant^2,1e-10)
+	~	people*people
+	~		|
+
+CovRP=
+	TIME STEP*Drive Variance in RR partial
+	~	people
+	~		|
+
+CovSP=
+	TIME STEP*Drive Variance in ER partial
+	~	people
+	~		|
+
+Noise P Drive Variance=
+	Drive Variance in Noise P
+	~	Dmnl
+	~		|
+
+Recovered Data Variance=
+	MAX(Noise Amp D^2*Drive Variance in Noise P*scaling constant^2,1e-10)
+	~	people*people
+	~		|
+
+Infected Data Variance=
+	MAX(Noise Amp D^2*Drive Variance in Noise P*scaling constant^2,1e-10)
+	~	people*people
+	~		|
+
+INFECTED RECOVERED DATA VARIANCE=
+	MAX(Infected Data Variance+Recovered Data Variance,1e-10)
+	~	people*people
+	~		|
+
+Infected Drive Variance=
+	(Drive Variance in RR + Drive Variance in IR)*(TIMESTEP)^2
+	~	people*people
+	~		|
+
+Susceptible Drive Variance=
+	Drive Variance in ER*(TIMESTEP)^2
+	~	people*people
+	~		|
+
+Exposed Drive Variance=
+	(Drive Variance in ER + Drive Variance in IR)*(TIMESTEP)^2
+	~	people*people
+	~		|
+
+TIMESTEP=
+	TIME STEP
+	~	day
+	~		|
+
+Recovered Drive Variance=
+	Drive Variance in RR*(TIMESTEP)^2
+	~	people*people
+	~		|
+
+scaling constant=
+	1000
+	~	people
+	~		|
+
+Exposed Initial Variance=
+	IV
+	~	people*people
+	~		|
+
+IV=
+	1e+06
+	~	people*people
+	~		|
+
+Infected Initial Variance=
+	IV
+	~	people*people
+	~		|
+
+Susceptible Initial Variance=
+	IV
+	~	people*people
+	~		|
+
+Recovered Initial Variance=
+	IV
+	~	people*people
+	~		|
+
+Infection Rate=
+	Expected IR
+	~	people/day
+	~		|
+
+Removal Rate=
+	Expected RR
+	~	people/day
+	~		|
+
+Exposure Rate=
+	Expected ER
+	~	people/day
+	~		|
+
+Noise Amp D=
+	0.1
+	~	Dmnl
+	~		|
+
+Expected ER=
+	MAX(0,Contact Rate*Infectivity*Exposed*Susceptible/Total Population)
+	~	people/day
+	~		|
+
+Expected IR=
+	MAX(0,Exposed/Incubation Period)
+	~	people/day
+	~		|
+
+Expected RR=
+	MAX(0,Infected/Infection Period)
+	~	people/day
+	~		|
+
+Noise Amp R=
+	0.2
+	~	Dmnl
+	~		|
+
+CovEI=
+	Drive Variance in IR*(TIME STEP)^2
+	~	people*people
+	~		|
+
+CovIR=
+	Drive Variance in RR*(TIME STEP)^2
+	~	people*people
+	~		|
+
+CovSE=
+	Drive Variance in ER*(TIME STEP)^2
+	~	people*people
+	~		|
+
+Exposed= INTEG (
+	Exposure Rate-Infection Rate,
+		Initial Exposed)
+	~	people
+	~		|
+
+Total Population=
+	Initial Exposed+Initial susceptible
+	~	people
+	~		|
+
+Unit for Rate=
+	1
+	~	people/day
+	~		|
+
+Infected= INTEG (
+	Infection Rate-Removal Rate,
+		0)
+	~	people
+	~		|
+
+Removed= INTEG (
+	Removal Rate,
+		0)
+	~	people
+	~		|
+
+Infection Period=
+	5
+	~	day
+	~		|
+
+Contact Rate=
+	2.236
+	~	1/day
+	~		|
+
+Incubation Period=
+	9.178
+	~	day
+	~		|
+
+Infectivity=
+	0.1
+	~	Dmnl
+	~		|
+
+Initial Exposed=
+	2
+	~	people
+	~		|
+
+Initial susceptible=
+	100000
+	~	people
+	~		|
+
+Susceptible= INTEG (
+	-Exposure Rate,
+		Initial susceptible)
+	~	people
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	day [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	day [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*SEIR
+$192-192-192,0,Helvetica|16||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Susceptible,268,314,83,29,3,131,0,0,0,0,0,0
+10,2,Exposed,622,313,85,29,3,131,0,0,0,0,0,0
+10,3,Infected,974,313,81,32,3,131,0,0,0,0,0,0
+1,4,6,2,4,0,0,22,0,0,0,-1--1--1,,1|(494,310)|
+1,5,6,1,100,0,0,22,0,0,0,-1--1--1,,1|(393,310)|
+11,6,636,444,310,8,11,34,3,0,0,1,0,0,0
+10,7,Exposure Rate,444,333,73,12,40,3,0,0,-1,0,0,0
+1,8,10,3,4,0,0,22,0,0,0,-1--1--1,,1|(851,312)|
+1,9,10,2,100,0,0,22,0,0,0,-1--1--1,,1|(750,312)|
+11,10,956,802,312,8,11,34,3,0,0,1,0,0,0
+10,11,Infection Rate,802,334,69,12,40,3,0,0,-1,0,0,0
+10,12,Contact Rate,294,443,55,12,8,3,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255
+10,13,Total Population,452,178,79,12,8,3,0,0,0,0,0,0
+10,14,Infectivity,586,441,39,12,8,3,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255
+10,15,Incubation Period,965,442,73,20,8,131,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255
+10,16,Initial susceptible,267,237,78,19,8,131,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255
+1,17,16,1,0,0,0,0,0,128,1,-1--1--1,,1|(267,263)|
+10,18,Initial Exposed,627,238,60,12,8,3,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255
+1,19,18,2,0,0,0,0,0,128,1,-1--1--1,,1|(625,260)|
+1,20,16,13,0,0,0,0,0,128,0,-1--1--1,,1|(363,206)|
+1,21,18,13,0,0,0,0,0,128,0,-1--1--1,,1|(546,210)|
+10,23,Removed,1320,314,80,31,3,131,0,0,0,0,0,0
+1,24,26,23,4,0,0,22,0,0,0,-1--1--1,,1|(1197,314)|
+1,25,26,3,100,0,0,22,0,0,0,-1--1--1,,1|(1097,314)|
+11,26,812,1147,314,8,11,34,3,0,0,1,0,0,0
+10,27,Removal Rate,1147,337,73,12,40,3,0,0,-1,0,0,0
+10,28,Infection Period,1289,442,75,21,8,131,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255
+10,31,TIME STEP,1281,1037,72,12,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|16||128-128-128
+10,32,Expected ER,443,470,65,12,8,3,0,0,0,0,0,0
+10,33,Expected IR,802,470,61,12,8,3,0,0,0,0,0,0
+10,34,Expected RR,1147,470,65,12,8,3,0,0,0,0,0,0
+1,35,12,32,0,0,0,0,0,128,0,-1--1--1,,1|(356,453)|
+1,36,14,32,0,0,0,0,0,128,0,-1--1--1,,1|(531,451)|
+1,37,13,32,1,0,0,0,0,128,0,-1--1--1,,1|(136,260)|
+1,38,1,32,1,0,0,0,0,128,0,-1--1--1,,1|(310,393)|
+1,39,2,32,1,0,0,0,0,128,0,-1--1--1,,1|(554,413)|
+1,40,32,7,0,0,0,0,0,128,0,-1--1--1,,1|(443,408)|
+1,41,33,11,0,0,0,0,0,128,0,-1--1--1,,1|(802,409)|
+1,42,34,27,0,0,0,0,0,128,0,-1--1--1,,1|(1147,410)|
+1,43,2,33,1,0,0,0,0,128,0,-1--1--1,,1|(689,412)|
+1,44,15,33,0,0,0,0,0,128,0,-1--1--1,,1|(884,455)|
+1,45,3,34,1,0,0,0,0,128,0,-1--1--1,,1|(1037,420)|
+1,46,28,34,0,0,0,0,0,128,0,-1--1--1,,1|(1217,455)|
+10,47,TIME STEP,390,277,45,8,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128
+10,48,Exposed,719,822,55,13,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|16||128-128-128
+10,49,Infected,1043,822,52,13,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|16||128-128-128
+10,50,Removed,1428,817,65,20,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|16||128-128-128
+10,51,Time,1154,561,37,13,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|16||128-128-128
+10,53,TIME STEP,422,810,52,10,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+12,54,0,388,378,20,20,5,7,0,11,-1,0,0,0,255-0-0,0-0-0,|14||255-0-0
+B
+12,55,0,385,414,37,11,8,7,0,26,-1,0,0,0,-1--1--1,0-0-0,|12|I|255-0-0
+Depletion
+12,56,0,1097,381,20,20,5,7,0,11,-1,0,0,0,255-0-0,0-0-0,|14||255-0-0
+B
+12,57,0,1095,416,36,11,8,7,0,26,-1,0,0,0,-1--1--1,0-0-0,|12|I|255-0-0
+Recovery
+12,58,0,499,379,20,20,4,7,0,11,-1,0,0,0,255-0-0,0-0-0,|14||255-0-0
+R
+12,59,0,499,414,39,11,8,7,0,26,-1,0,0,0,-1--1--1,0-0-0,|12|I|255-0-0
+Contagion
+12,60,0,751,379,20,20,5,7,0,11,-1,0,0,0,255-0-0,0-0-0,|14||255-0-0
+B
+12,61,0,752,415,38,11,8,7,0,26,-1,0,0,0,-1--1--1,0-0-0,|12|I|255-0-0
+Diagnosis
+///---\\\
+:L<%^E!@
+1:mcmc_kf.vdf
+1:kf.vdf
+9:graph
+22:$,Dollar,Dollars,$s
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+22:Day,Days
+10:SEIR_est.cin
+11:opt_kf_mcmc.voc
+12:payoff_kf_mcmc.vpd
+13:data.vdf
+15:0,0,1,0,0,0
+19:100,0
+27:0,
+34:0,
+4:Time
+5:Contact Rate
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:4
+41:0
+42:1
+24:0
+25:100
+26:100

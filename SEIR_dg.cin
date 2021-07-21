@@ -1,0 +1,10 @@
+:COMMENT  It brings noise into the model to generate synthetic data.
+:COMMENT
+Noise Amp ED = 0.9
+Noise Amp ID = 0.9
+Noise Amp RD = 0.9
+Noise Amp ER = 0.9
+Noise Amp IR = 0.9
+Noise Amp RR = 0.9
+Noise correlation time = 8 
+random seed = 10000 

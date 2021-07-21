@@ -1,0 +1,11 @@
+! Data generation
+SPECIAL>NOINTERACTION
+SPECIAL>LOADMODEL|SEIR_data_generation.mdl
+
+! ordinary simulation
+SIMULATE>RUNNAME|data.vdf
+SIMULATE>READCIN|SEIR_dg.cin
+MENU>RUN|o
+MENU>VDF2CSV|!|!|
+!SPECIAL>CLEARRUNS
+MENU>EXIT
