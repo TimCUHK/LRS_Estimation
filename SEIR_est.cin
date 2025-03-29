@@ -1,5 +1,6 @@
 :COMMENT  It brings noise into the model to generate synthetic data.
 :COMMENT
 TIME STEP = 0.125 
-IV = 1000000.0 
-Min Variance F = 10000.0 
+IV for SEIR = 1000000.0 
+IV for Noise = 1.0 
+Min Variance F = 2000000.0 

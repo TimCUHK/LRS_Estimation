@@ -1,6 +1,6 @@
 ! Estimation
 SPECIAL>NOINTERACTION
-SPECIAL>LOADMODEL|SEIR_estimation_p.mdl
+SPECIAL>LOADMODEL|STD_SEIR_estimation_p.mdl
 
 ! MCMC
 ! Estimate should find the right optimum

@@ -1,6 +1,6 @@
 {UTF-8}
 Expected ER=
-	MAX(0,Contact Rate*Infectivity*Exposed*Susceptible/Total Population)
+	MAX(0,Contact Rate*Infectivity*Infected*Susceptible/Total Population)
 	~	people/day
 	~		|
 
@@ -246,12 +246,12 @@ CovSE=
 
 Exposed= INTEG (
 	Exposure Rate-Infection Rate,
-		Initial Exposed)
+		0)
 	~	people
 	~		|
 
 Total Population=
-	Initial Exposed+Initial susceptible
+	Initial Infected+Initial susceptible
 	~	people
 	~		|
 
@@ -262,7 +262,7 @@ Unit for Rate=
 
 Infected= INTEG (
 	Infection Rate-Removal Rate,
-		0)
+		Initial Infected)
 	~	people
 	~		|
 
@@ -292,7 +292,7 @@ Infectivity=
 	~	Dmnl
 	~		|
 
-Initial Exposed=
+Initial Infected=
 	2
 	~	people
 	~		|
@@ -356,7 +356,7 @@ $192-192-192,0,Helvetica|16||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
 10,15,Incubation Period,657,503,75,30,8,131,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255,0,0,0,0,0,0
 10,16,Initial susceptible,267,237,75,30,8,131,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255,0,0,0,0,0,0
 1,17,16,1,0,0,0,0,0,128,1,-1--1--1,,1|(0,0)|
-10,18,Initial Exposed,621,237,75,30,8,3,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255,0,0,0,0,0,0
+10,18,Initial Infected,973,230,75,30,8,3,0,10,0,0,0,0,-1--1--1,0-0-0,|14||0-0-255,0,0,0,0,0,0
 1,19,16,13,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
 1,20,18,13,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
 10,21,Removed,1320,314,80,31,3,131,0,0,0,0,0,0,0,0,0,0,0,0
@@ -402,12 +402,12 @@ Contagion
 B
 12,55,0,752,415,38,11,8,7,0,26,-1,0,0,0,-1--1--1,0-0-0,|12|I|255-0-0,0,0,0,0,0,0
 Diagnosis
-1,56,2,28,1,0,0,0,0,192,0,-1--1--1,,1|(545,420)|
-1,57,18,2,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,56,3,28,1,0,0,0,0,192,0,-1--1--1,,1|(800,521)|
+1,57,18,3,0,0,0,0,0,64,1,-1--1--1,,1|(0,0)|
 ///---\\\
 :L<%^E!@
 4:Time
-5:Initial Exposed
+5:Infection Period
 9:graph
 19:100,0
 24:0

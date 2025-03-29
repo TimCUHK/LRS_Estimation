@@ -1,6 +1,6 @@
 ! Data generation
 SPECIAL>NOINTERACTION
-SPECIAL>LOADMODEL|SEIR_data_generation.mdl
+SPECIAL>LOADMODEL|STD_SEIR_data_generation.mdl
 
 ! ordinary simulation
 SIMULATE>RUNNAME|data.vdfx

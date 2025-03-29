@@ -6,9 +6,9 @@ SPECIAL>LOADMODEL|SEIR_estimation.mdl
 ! Estimate should find the right optimum
 ! Important: Make sure the number after 'KALMAN' is 0
 
-SIMULATE>RUNNAME|mcmc.vdf
+SIMULATE>RUNNAME|mcmc.vdfx
 SIMULATE>READCIN|SEIR_est.cin
-SIMULATE>DATA|data.vdf
+SIMULATE>DATA|data.vdfx
 SIMULATE>PAYOFF|payoff_mcmc.vpd
 SIMULATE>OPTPARM|opt_mcmc.voc
 SIMULATE>KALMAN|0

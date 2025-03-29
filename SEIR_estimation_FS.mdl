@@ -1,0 +1,1446 @@
+{UTF-8}
+IV for Noise=
+	0
+	~	Dmnl
+	~		|
+
+Exposed Data Variance=
+	MAX(Noise Amp ED^2*0.0833*scaling constant S^2,Min Variance S)
+	~	people*people
+	~		|
+
+Exposed Data Variance Scaled=
+	MAX(Noise Amp ED^2*0.0833*(Exposed)^2,Min Variance S)
+	~	people*people
+	~		|
+
+Infected Data Variance=
+	MAX(Noise Amp ID^2*0.0833*scaling constant S^2,Min Variance S)
+	~	people*people
+	~		|
+
+Infection Rate Data Variance=
+	MAX(Noise Amp ID^2*0.0833*scaling constant F^2,Min Variance F)
+	~	people*people/(day*day)
+	~		|
+
+Drive Variance in ER=
+	MAX(1e-06,Expected ER^2*0.0833*Noise Amp ER^2)
+	~	people*people/day/day
+	~		|
+
+Drive Variance in IR=
+	MAX(1e-06,Expected IR^2*0.0833*Noise Amp IR^2)
+	~	people*people/(day*day)
+	~		|
+
+Drive Variance in RR=
+	MAX(1e-06,Expected RR^2*0.0833*Noise Amp RR^2)
+	~	people*people/(day*day)
+	~		|
+
+Noise Amp ID=
+	Noise Amp D
+	~	Dmnl
+	~		|
+
+Exposure Rate Data Variance=
+	MAX(Noise Amp ED^2*0.0833*scaling constant F^2,Min Variance F)
+	~	people*people/(day*day)
+	~		|
+
+Exposure Rate Data Variance Scaled=
+	MAX(Noise Amp ED^2*0.0833*((Exposure Rate)^2),Min Variance F)
+	~	people*people/(day*day)
+	~		|
+
+Recovered Data Variance=
+	MAX(Noise Amp RD^2*0.0833*scaling constant S^2,Min Variance S)
+	~	people*people
+	~		|
+
+Recovered Data Variance Scaled=
+	MAX(Noise Amp RD^2*0.0833*(Recovered)^2,Min Variance S)
+	~	people*people
+	~		|
+
+Noise Amp ED=
+	Noise Amp D
+	~	Dmnl
+	~		|
+
+Noise Amp ER=
+	Noise Amp R
+	~	Dmnl
+	~		|
+
+Noise Amp RD=
+	Noise Amp D
+	~	Dmnl
+	~		|
+
+Noise Amp IR=
+	Noise Amp R
+	~	Dmnl
+	~		|
+
+Recovery Rate Data Variance Scaled=
+	MAX(Noise Amp RD^2*0.0833*((Recovery Rate)^2),Min Variance F)
+	~	people*people/(day*day)
+	~		|
+
+Infection Rate Data Variance Scaled=
+	MAX(Noise Amp ID^2*0.0833*((Infection Rate)^2),Min Variance F)
+	~	people*people/(day*day)
+	~		|
+
+Noise Amp RR=
+	Noise Amp R
+	~	Dmnl
+	~		|
+
+Recovery Rate Data Variance=
+	MAX(Noise Amp RD^2*0.0833*scaling constant F^2,Min Variance F)
+	~	people*people/(day*day)
+	~		|
+
+Infected Data Variance Scaled=
+	MAX(Noise Amp ID^2*0.0833*(Infected)^2,Min Variance S)
+	~	people*people
+	~		|
+
+Min Variance F=
+	100000
+	~	people*people/(day*day)
+	~		|
+
+Infected Drive Variance=
+	(Drive Variance in RR + Drive Variance in IR)*(TIME STEP)^2
+	~	people*people
+	~		|
+
+Exposed Drive Variance=
+	(Drive Variance in ER + Drive Variance in IR)*(TIME STEP)^2
+	~	people*people
+	~		|
+
+Susceptible Drive Variance=
+	Drive Variance in ER*(TIME STEP)^2
+	~	people*people
+	~		|
+
+Recovered Drive Variance=
+	Drive Variance in RR*(TIME STEP)^2
+	~	people*people
+	~		|
+
+F NB Payoff EIR=
+	LN(MAX((Infection Rate/Unit Person per Day/(Infection Rate/Unit Person per Day+r))^(\
+		Infection Rate Data/Unit Person per Day
+	)*((r)/(Infection Rate/Unit Person per Day+r))^(r)*EXP(GAMMA LN(Infection Rate Data/\
+		Unit Person per Day+(r)+1) - 
+	GAMMA LN
+	((r)+1)- GAMMA LN(Infection Rate Data/Unit Person per Day+1)),0.0001)) +
+	LN(MAX((Exposure Rate/Unit Person per Day/(Exposure Rate/Unit Person per Day+r))^(Exposure Rate Data\
+		/Unit Person per Day
+	)*((r)/(Exposure Rate/Unit Person per Day+r))^(r)*EXP(GAMMA LN(Exposure Rate Data/Unit Person per Day\
+		+(r)+1) - GAMMA LN
+	((r)+1)- GAMMA LN(Exposure Rate Data/Unit Person per Day+1)),0.0001)) +
+	
+	LN(MAX((Recovery Rate/Unit Person per Day/(Recovery Rate/Unit Person per Day+r))^(Recovery Rate Data\
+		/Unit Person per Day
+	)*((r)/(Recovery Rate/Unit Person per Day+r))^(r)*EXP(GAMMA LN(Recovery Rate Data/Unit Person per Day\
+		+(r)+1) 
+	-
+	 GAMMA LN((r)+1)- GAMMA LN(Recovery Rate Data/Unit Person per Day+1)),0.0001))
+	~	Dmnl
+	~		|
+
+F MCMC payoff P I=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*((Infection Rate Data*LN(MAX(Infection Rate\
+		,0.0001)/Unit Person per Day) - Infection Rate)) ,0)
+	~	people/day
+	~		|
+
+F MCMC payoff P IR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*((Infection Rate Data*LN(MAX(Infection Rate\
+		,0.0001)/Unit Person per Day) - Infection Rate) + (Recovery Rate Data
+	*LN(MAX(Recovery Rate,0.0001)/Unit Person per Day) - Recovery Rate)) ,0)
+	~	people/day
+	~		|
+
+F MCMC payoff S EIR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Exposure Rate-Exposure Rate Data)^2/\
+		(Exposure Rate Data STD Scaled^2)/2 + (Infection Rate-Infection Rate Data
+	)^2
+	/(Infection Rate Data STD Scaled^2)/2 + (Recovery Rate-Recovery Rate Data)^2/(Recovery Rate Data STD Scaled
+	^2)/2 + 
+	
+	LN(Exposure Rate Data STD Scaled/Unit Person per Day) + LN(Infection Rate Data STD Scaled\
+		/Unit Person per Day
+	) + LN(Recovery Rate Data STD Scaled/Unit Person per Day), 0)
+	~	Dmnl
+	~		|
+
+F MCMC payoff S IR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Infection Rate-Infection Rate Data)^\
+		2
+	/(Infection Rate Data STD Scaled^2)/2 + (Recovery Rate-Recovery Rate Data)^2/(Recovery Rate Data STD Scaled
+	^2)/2 + 
+	
+	LN(MAX(Infection Rate Data STD Scaled,1e-08)/Unit Person per Day) + LN(MAX(Recovery Rate Data STD Scaled
+	,1e-08)/Unit Person per Day), 0)
+	~	Dmnl
+	~		|
+
+F MCMC payoff G IR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Infection Rate-Infection Rate Data)^\
+		2
+	/(Infection Rate Data STD^2)/2 + (Recovery Rate-Recovery Rate Data)^2/(Recovery Rate Data STD\
+		^2)/2 + 
+	
+	LN(MAX(Infection Rate Data STD,1e-08)/Unit Person per Day) + LN(MAX(Recovery Rate Data STD
+	,1e-08)/Unit Person per Day), 0)
+	~	Dmnl
+	~		|
+
+F NB Payoff I=
+	LN(MAX((Infection Rate/Unit Person per Day/(Infection Rate/Unit Person per Day+r))^(\
+		Infection Rate Data/Unit Person per Day
+	)*((r)/(Infection Rate/Unit Person per Day+r))^(r)*EXP(GAMMA LN(Infection Rate Data/\
+		Unit Person per Day+(r)+1) - GAMMA LN
+	((r)+1)- GAMMA LN(Infection Rate Data/Unit Person per Day+1)),0.0001))
+	~	Dmnl
+	~		|
+
+F NB Payoff IR=
+	LN(MAX((Infection Rate/Unit Person per Day/(Infection Rate/Unit Person per Day+r))^(\
+		Infection Rate Data/Unit Person per Day
+	)*((r)/(Infection Rate/Unit Person per Day+r))^(r)*EXP(GAMMA LN(Infection Rate Data/\
+		Unit Person per Day+(r)+1) - 
+	GAMMA LN
+	((r)+1)- GAMMA LN(Infection Rate Data/Unit Person per Day+1)),0.0001)) +
+	
+	LN(MAX((Recovery Rate/Unit Person per Day/(Recovery Rate/Unit Person per Day+r))^(Recovery Rate Data\
+		/Unit Person per Day
+	)*((r)/(Recovery Rate/Unit Person per Day+r))^(r)*EXP(GAMMA LN(Recovery Rate Data/Unit Person per Day\
+		+(r)+1) 
+	-
+	 GAMMA LN((r)+1)- GAMMA LN(Recovery Rate Data/Unit Person per Day+1)),0.0001))
+	~	Dmnl
+	~		|
+
+F MCMC payoff P EIR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*((Exposure Rate Data*LN(MAX(Exposure Rate\
+		,0.0001)/Unit Person per Day) - Exposure Rate) + (Infection Rate Data
+	*LN(MAX(Infection Rate,0.0001)/Unit Person per Day) - Infection Rate) + (Recovery Rate Data
+	*LN(MAX(Recovery Rate,0.0001)/Unit Person per Day) - Recovery Rate)) ,0)
+	~	people/day
+	~		|
+
+F MCMC payoff G I=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Infection Rate-Infection Rate Data)^\
+		2
+	/(Infection Rate Data STD^2)/2 + 
+	
+	LN(MAX(Infection Rate Data STD,1e-08)/Unit Person per Day), 0)
+	~	Dmnl
+	~		|
+
+F MCMC payoff S I=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Infection Rate-Infection Rate Data)^\
+		2
+	/(Infection Rate Data STD Scaled^2)/2  + 
+	
+	LN(MAX(Infection Rate Data STD Scaled,1e-08)/Unit Person per Day) , 0)
+	~	Dmnl
+	~		|
+
+F MCMC payoff G EIR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Exposure Rate-Exposure Rate Data)^2/\
+		(Exposure Rate Data STD^2)/2 + (Infection Rate-Infection Rate Data)
+	^2
+	/(Infection Rate Data STD^2)/2 + (Recovery Rate-Recovery Rate Data)^2/(Recovery Rate Data STD\
+		^2)/2 + 
+	
+	LN(MAX(Exposure Rate Data STD,1e-08)/Unit Person per Day) + LN(MAX(Infection Rate Data STD\
+		,1e-08)/Unit Person per Day
+	) + LN(MAX(Recovery Rate Data STD
+	,1e-08)/Unit Person per Day), 0)
+	~	Dmnl
+	~		|
+
+Exposure Rate Data:INTERPOLATE:
+	~	people/day
+	~		|
+
+S MCMC payoff S I=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Infected-Infected Data)^2/(Infected Data STD Scaled\
+		^2)/2 + LN(MAX(Infected Data STD Scaled,1e-08)/Unit Person) , 0)
+	~	Dmnl
+	~		|
+
+S MCMC payoff S IR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Infected-Infected Data)^2/(Infected Data STD Scaled\
+		^2)/2 + (Recovered-Recovered Data
+	)^2/(Recovered Data STD Scaled^2)/2 + LN(MAX(Infected Data STD Scaled,1e-08)/Unit Person\
+		) + LN(MAX(Recovered Data STD Scaled,1e-08)/Unit Person), 0)
+	~	Dmnl
+	~		|
+
+Min Variance S=
+	1e+06
+	~	people*people
+	~		|
+
+Exposure Rate Data STD Scaled=
+	Exposure Rate Data Variance Scaled^0.5
+	~	people/day
+	~		|
+
+Exposed Data STD Scaled=
+	Exposed Data Variance Scaled^0.5
+	~	people
+	~		|
+
+Infection Rate Data STD Scaled=
+	Infection Rate Data Variance Scaled^0.5
+	~	people/day
+	~		|
+
+Infected Data STD Scaled=
+	Infected Data Variance Scaled^0.5
+	~	people
+	~		|
+
+Recovery Rate Data STD Scaled=
+	Recovery Rate Data Variance Scaled^0.5
+	~	people/day
+	~		|
+
+Infected Recovered Data STD Scaled=
+	INFECTED RECOVERED DATA VARIANCE Scaled^0.5
+	~	people
+	~		|
+
+INFECTED RECOVERED DATA VARIANCE Scaled=
+	MAX(Infected Data Variance Scaled+Recovered Data Variance Scaled,1e-10)
+	~	people*people
+	~		|
+
+Recovered Data STD Scaled=
+	Recovered Data Variance Scaled^0.5
+	~	people
+	~		|
+
+F MCMC payoff NB EIR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*F NB Payoff EIR, 0)
+	~	Dmnl
+	~		|
+
+F MCMC payoff NB I=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*F NB Payoff I, 0)
+	~	Dmnl
+	~		|
+
+F MCMC payoff NB IR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*F NB Payoff IR, 0)
+	~	Dmnl
+	~		|
+
+scaling constant F=
+	1000
+	~	people/day
+	~		|
+
+Unit Person per Day=
+	1
+	~	people/day
+	~		|
+
+Exposure Rate Data STD=
+	Exposure Rate Data Variance^0.5
+	~	people/day
+	~		|
+
+Infection Rate Data:INTERPOLATE:
+	~	people/day
+	~		|
+
+Infection Rate Data STD=
+	Infection Rate Data Variance^0.5
+	~	people/day
+	~		|
+
+Recovery Rate Data:INTERPOLATE:
+	~	people/day
+	~		|
+
+Recovery Rate Data STD=
+	Recovery Rate Data Variance^0.5
+	~	people/day
+	~		|
+
+S MCMC payoff G IR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , ((Infected-Infected Data)^2/(Infected Data STD\
+		^2)/2 + (Recovered-Recovered Data
+	)^2/(Recovered Data STD^2)/2 + LN(MAX(Infected Data STD,1e-08)/Unit Person) + LN(MAX\
+		(Recovered Data STD
+	,1e-08)/Unit Person)), 0)
+	~	Dmnl
+	~		|
+
+S MCMC payoff G I=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , ((Infected-Infected Data)^2/(Infected Data STD\
+		^2)/2 + LN(MAX(Infected Data STD,1e-08)/Unit Person)), 0)
+	~	Dmnl
+	~		|
+
+S MCMC payoff S EIR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , (Exposed-Exposed Data)^2/(Exposed Data STD Scaled\
+		^2)/2 + (Infected-Infected Data)^2/(Infected Data STD Scaled^2)/2 + (Recovered-Recovered Data
+	)^2/(Recovered Data STD Scaled^2)/2 + LN(MAX(Exposed Data STD Scaled,1e-08)/Unit Person\
+		) + LN(MAX(Infected Data STD Scaled,1e-08)/Unit Person) + LN(MAX(Recovered Data STD Scaled
+	,1e-08)/Unit Person), 0 )
+	~	Dmnl
+	~		|
+
+S MCMC payoff NB EIR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*S NB Payoff EIR, 0)
+	~	Dmnl
+	~		|
+
+S MCMC payoff NB IR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*S NB Payoff IR, 0)
+	~	Dmnl
+	~		|
+
+S MCMC payoff NB I=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*S NB Payoff I, 0)
+	~	Dmnl
+	~		|
+
+S MCMC payoff P EIR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*((Exposed Data*LN(MAX(Exposed,0.0001\
+		)/Unit Person) - Exposed) + (Infected Data*LN(MAX(Infected,0.0001)/Unit Person) - Infected\
+		) + (Recovered Data
+	*LN(MAX(Recovered,0.0001)/Unit Person) - Recovered)), 0)
+	~	people
+	~		|
+
+S MCMC payoff P IR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*((Infected Data*LN(MAX(Infected,0.0001\
+		)/Unit Person) - Infected) + (Recovered Data
+	*LN(MAX(Recovered,0.0001)/Unit Person) - Recovered)), 0)
+	~	people
+	~		|
+
+S MCMC payoff P I=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , -1*((Infected Data*LN(MAX(Infected,0.0001\
+		)/Unit Person) - Infected)), 0)
+	~	people
+	~		|
+
+S NB Payoff EIR=
+	LN(MAX((MAX(Infected,0.0001)/Unit Person/(MAX(Infected,0.0001)/Unit Person+r))^(Infected Data\
+		/Unit Person)*((r)/(MAX(Infected,0.0001)/Unit Person+r))^(r)*EXP(GAMMA LN(Infected Data\
+		/Unit Person+(r)+1) - GAMMA LN((r)+1)- GAMMA LN(Infected Data/Unit Person+1)),0.0001\
+		)) +
+	
+	LN(MAX((MAX(Exposed,0.0001)/Unit Person/(MAX(Exposed,0.0001)/Unit Person+r))^(Exposed Data\
+		/Unit Person)*((r)/(MAX(Exposed,0.0001)/Unit Person+r))^(r)*EXP(GAMMA LN(Exposed Data\
+		/Unit Person+(r)+1) - GAMMA LN((r)+1)- GAMMA LN(Exposed Data/Unit Person+1)),0.0001\
+		)) +
+	
+	LN(MAX((MAX(Recovered,0.0001)/Unit Person/(MAX(Recovered,0.0001)/Unit Person+r))^(Recovered Data\
+		/Unit Person)*((r)/(MAX(Recovered,0.0001)/Unit Person+r))^(r)*EXP(GAMMA LN(Recovered Data\
+		/Unit Person+(r)+1) - GAMMA LN((r)+1)- GAMMA LN(Recovered Data/Unit Person+1)),0.0001\
+		))
+	~	Dmnl
+	~		|
+
+S NB Payoff IR=
+	LN(MAX((MAX(Infected,0.0001)/Unit Person/(MAX(Infected,0.0001)/Unit Person+r))^(Infected Data\
+		/Unit Person)*((r)/(MAX(Infected,0.0001)/Unit Person+r))^(r)*EXP(GAMMA LN(Infected Data\
+		/Unit Person+(r)+1) - GAMMA LN((r)+1)- GAMMA LN(Infected Data/Unit Person+1)),0.0001\
+		)) +
+	
+	LN(MAX((MAX(Recovered,0.0001)/Unit Person/(MAX(Recovered,0.0001)/Unit Person+r))^(Recovered Data\
+		/Unit Person)*((r)/(MAX(Recovered,0.0001)/Unit Person+r))^(r)*EXP(GAMMA LN(Recovered Data\
+		/Unit Person+(r)+1) - GAMMA LN((r)+1)- GAMMA LN(Recovered Data/Unit Person+1)),0.0001\
+		))
+	~	Dmnl
+	~		|
+
+S NB Payoff I=
+	LN(MAX((MAX(Infected,0.0001)/Unit Person/(MAX(Infected,0.0001)/Unit Person+r))^(Infected Data\
+		/Unit Person)*((r)/(MAX(Infected,0.0001)/Unit Person+r))^(r)*EXP(GAMMA LN(Infected Data\
+		/Unit Person+(r)+1) - GAMMA LN((r)+1)- GAMMA LN(Infected Data/Unit Person+1)),0.0001\
+		))
+	~	Dmnl
+	~		|
+
+Unit Person=
+	1
+	~	people
+	~		|
+
+r=
+	1
+	~	Dmnl
+	~		|
+
+S MCMC payoff G EIR=
+	IF THEN ELSE( ABS(MODULO( Time , 1 ))< 0.001 , ((Exposed-Exposed Data)^2/(Exposed Data STD\
+		^2)/2 + (Infected-Infected Data)^2/(Infected Data STD^2)/2 + (Recovered-Recovered Data
+	)^2/(Recovered Data STD^2)/2 + LN(MAX(Exposed Data STD,1e-08)/Unit Person) + LN(MAX(\
+		Infected Data STD,1e-08)/Unit Person) + LN(MAX(Recovered Data STD
+	,1e-08)/Unit Person)), 0 )
+	~	Dmnl
+	~		|
+
+Infected Recovered Data STD=
+	INFECTED RECOVERED DATA VARIANCE^0.5
+	~	people
+	~		|
+
+Recovered Data STD=
+	Recovered Data Variance^0.5
+	~	people
+	~		|
+
+Exposed Data STD=
+	Exposed Data Variance^0.5
+	~	people
+	~		|
+
+Infected Data STD=
+	Infected Data Variance^0.5
+	~	people
+	~		|
+
+Infected Recovered=
+	Infected+Recovered
+	~	people
+	~		|
+
+Infected Recovered Data:INTERPOLATE:
+	~	people
+	~		|
+
+INFECTED RECOVERED DATA VARIANCE=
+	MAX(Infected Data Variance+Recovered Data Variance,1e-10)
+	~	people*people
+	~		|
+
+scaling constant S=
+	1000
+	~	people
+	~		|
+
+Exposed Initial Variance=
+	IV for SEIR
+	~	people*people
+	~		|
+
+IV for SEIR=
+	1e+06
+	~	people*people
+	~		|
+
+Infected Initial Variance=
+	IV for SEIR
+	~	people*people
+	~		|
+
+Susceptible Initial Variance=
+	IV for SEIR
+	~	people*people
+	~		|
+
+Recovered Initial Variance=
+	IV for SEIR
+	~	people*people
+	~		|
+
+Infection Rate=
+	Expected IR
+	~	people/day
+	~		|
+
+Recovery Rate=
+	Expected RR
+	~	people/day
+	~		|
+
+Exposure Rate=
+	Expected ER
+	~	people/day
+	~		|
+
+Noise Amp D=
+	0.5
+	~	Dmnl
+	~		|
+
+Infected Data:INTERPOLATE:
+	~	people
+	~		|
+
+Recovered Data:INTERPOLATE:
+	~	people
+	~		|
+
+Exposed Data:INTERPOLATE:
+	~	people
+	~		|
+
+Expected ER=
+	MAX(0,Contact Rate*Infectivity*Exposed*Susceptible/Total Population)
+	~	people/day
+	~		|
+
+Expected IR=
+	MAX(0,Exposed/Incubation Period)
+	~	people/day
+	~		|
+
+Expected RR=
+	MAX(0,Infected/Infection Period)
+	~	people/day
+	~		|
+
+Noise Amp R=
+	0.5
+	~	Dmnl
+	~		|
+
+CovEI=
+	Drive Variance in IR*(TIME STEP)^2
+	~	people*people
+	~		|
+
+CovIR=
+	Drive Variance in RR*(TIME STEP)^2
+	~	people*people
+	~		|
+
+CovSE=
+	Drive Variance in ER*(TIME STEP)^2
+	~	people*people
+	~		|
+
+Exposed= INTEG (
+	Exposure Rate-Infection Rate,
+		Initial Exposed)
+	~	people
+	~		|
+
+Total Population=
+	Initial Exposed+Initial susceptible
+	~	people
+	~		|
+
+Infected= INTEG (
+	Infection Rate-Recovery Rate,
+		0)
+	~	people
+	~		|
+
+Recovered= INTEG (
+	Recovery Rate,
+		0)
+	~	people
+	~		|
+
+Infection Period=
+	10
+	~	day
+	~		|
+
+Contact Rate=
+	5
+	~	1/day
+	~		|
+
+Incubation Period=
+	10
+	~	day
+	~		|
+
+Infectivity=
+	0.1
+	~	Dmnl
+	~		|
+
+Initial Exposed=
+	2
+	~	people
+	~		|
+
+Initial susceptible=
+	100000-2
+	~	people
+	~		|
+
+Susceptible= INTEG (
+	-Exposure Rate,
+		Initial susceptible)
+	~	people
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	day [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	day [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*SEIR
+$192-192-192,0,Helvetica|16||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Susceptible,313,256,83,29,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,Exposed,672,254,85,29,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,3,Infected,1019,255,81,32,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,4,6,2,4,0,0,22,0,0,0,-1--1--1,,1|(542,252)|
+1,5,6,1,100,0,0,22,0,0,0,-1--1--1,,1|(438,252)|
+11,6,0,489,252,8,11,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,7,Exposure Rate,489,290,75,30,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,10,3,4,0,0,22,0,0,0,-1--1--1,,1|(896,254)|
+1,9,10,2,100,0,0,22,0,0,0,-1--1--1,,1|(798,254)|
+11,10,0,847,254,8,11,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,Infection Rate,847,292,75,30,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,12,Contact Rate,348,364,75,30,8,3,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+10,13,Total Population,497,120,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,14,Infectivity,613,364,75,30,8,3,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+10,15,Incubation Period,933,364,75,30,8,131,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+10,16,Initial susceptible,313,180,75,30,8,131,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+1,17,16,1,0,0,0,0,0,128,1,-1--1--1,,1|(0,0)|
+10,18,Initial Exposed,672,180,75,30,8,3,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+1,19,18,2,0,0,0,0,0,128,1,-1--1--1,,1|(0,0)|
+1,20,16,13,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,21,18,13,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,22,Exposed Data,677,479,75,30,8,3,0,16,0,0,0,0,-1--1--1,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,23,Recovered,1365,256,80,31,3,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,24,26,23,4,0,0,22,0,0,0,-1--1--1,,1|(1242,256)|
+1,25,26,3,100,0,0,22,0,0,0,-1--1--1,,1|(1142,256)|
+11,26,0,1192,256,8,11,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,27,Recovery Rate,1192,294,75,30,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,28,Infection Period,1279,362,75,30,8,3,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+10,29,Infected Data,1025,478,75,30,8,3,0,16,0,0,0,0,-1--1--1,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,30,Recovered Data,1370,476,75,30,8,131,0,16,0,0,0,0,-1--1--1,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,31,TIME STEP,1326,1054,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,32,Expected ER,488,412,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,33,Expected IR,847,412,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,34,Expected RR,1192,412,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,35,12,32,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,36,14,32,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,37,13,32,1,0,0,0,0,128,0,-1--1--1,,1|(208,209)|
+1,38,1,32,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,39,2,32,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,40,32,7,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,41,33,11,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,42,34,27,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,43,2,33,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,44,15,33,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,45,3,34,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,46,28,34,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,47,TIME STEP,435,294,75,30,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,48,Exposed,764,839,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,49,Infected,1088,839,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,50,Recovered,1473,834,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,51,Time,1199,578,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,52,Infected Recovered,1192,153,75,30,8,3,0,8,0,0,0,0,-1--1--1,0-0-0,|14||0-0-0,0,0,0,0,0,0
+10,53,Infected Recovered Data,1191,531,75,30,8,3,0,24,0,0,0,0,-1--1--1,0-0-0,|14|B|0-0-0,0,0,0,0,0,0
+1,54,3,52,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,55,23,52,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,56,Exposure Rate Data,673,71,75,30,8,131,0,16,0,0,0,0,-1--1--1,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,57,Infection Rate Data,1018,71,75,30,8,131,0,16,0,0,0,0,-1--1--1,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,58,Recovery Rate Data,1363,72,75,30,8,3,0,16,0,0,0,0,-1--1--1,0-0-0,||B|0-0-0,0,0,0,0,0,0
+10,59,TIME STEP,1078,778,75,30,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Kalman Flitering
+$192-192-192,0,Times New Roman|14||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Exposed Data Variance,466,337,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,Exposed Drive Variance,467,992,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,3,Exposed Initial Variance,466,149,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,4,Infected Data Variance,808,337,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,5,Infected Drive Variance,810,992,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,6,Infected Initial Variance,812,150,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,7,Recovered Data Variance,1161,339,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,8,Recovered Drive Variance,1163,992,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,9,Recovered Initial Variance,1164,152,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,10,Susceptible Drive Variance,127,990,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,11,Susceptible Initial Variance,129,149,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,12,TIME STEP,1165,249,75,30,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+12,13,0,631,-440,596,37,3,135,0,28,0,0,0,0,-1--1--1,192-192-192,|18|B|0-0-0,0,0,0,0,0,0
+Variances
+10,14,CovSE,288,1162,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,15,CovEI,643,1163,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,16,CovIR,996,1160,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,17,TIME STEP,643,1230,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+1,18,17,15,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,19,17,16,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,20,Drive Variance in ER,288,1080,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,21,Drive Variance in IR,643,1080,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,22,Drive Variance in RR,996,1080,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,23,20,10,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,24,20,2,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,25,21,2,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,26,22,5,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,27,21,5,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,28,22,8,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,29,17,14,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,30,20,14,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,31,21,15,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,32,22,16,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,33,Noise Amp D,808,223,75,30,8,131,0,18,0,0,0,0,-1--1--1,0-0-0,||I|255-0-0,0,0,0,0,0,0
+10,34,IV for SEIR,636,114,75,30,8,3,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+1,35,34,3,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,36,34,11,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,37,34,6,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,38,34,9,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,39,scaling constant S,808,393,75,30,8,131,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+1,40,39,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,41,39,4,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,42,39,7,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,43,Drive Variance in ER,278,-205,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,44,Drive Variance in IR,661,-205,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,45,Drive Variance in RR,1021,-203,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,46,Noise Amp R,532,-52,75,30,8,131,0,18,0,0,0,0,-1--1--1,0-0-0,||I|255-0-0,0,0,0,0,0,0
+10,47,Expected ER,278,-145,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,48,47,43,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,49,Expected IR,661,-141,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,50,49,44,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,51,Expected RR,1021,-139,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,52,51,45,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,53,INFECTED RECOVERED DATA VARIANCE,982,429,75,30,8,3,0,8,0,0,0,0,-1--1--1,0-0-0,|12||0-0-0,0,0,0,0,0,0
+1,54,4,53,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,55,7,53,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,56,Exposed Data STD,467,450,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,57,Infected Data STD,734,451,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,58,Recovered Data STD,1161,450,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,59,Infected Recovered Data STD,983,509,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,60,53,59,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,61,7,58,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,62,4,57,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,63,1,56,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,64,Exposure Rate Data Variance,470,696,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,65,Infection Rate Data Variance,814,695,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,66,Recovery Rate Data Variance,1165,697,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,67,Exposure Rate Data STD,470,805,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,68,Infection Rate Data STD,737,808,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,69,Recovery Rate Data STD,1166,803,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,70,66,69,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,71,65,68,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,72,64,67,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,73,scaling constant F,813,751,75,30,8,3,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+1,74,73,65,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,75,73,66,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,76,73,64,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,77,Min Variance S,519,227,75,30,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,78,Min Variance S,548,372,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+1,79,78,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,80,Min Variance S,726,361,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,81,Min Variance S,1224,389,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+1,82,80,4,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,83,81,7,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,84,Min Variance F,411,657,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+1,85,84,64,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,86,Min Variance F,752,657,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,87,Min Variance F,1097,660,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+1,88,86,65,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,89,87,66,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,90,TIME STEP,641,909,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,91,90,10,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,92,90,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,93,90,5,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,94,90,8,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,95,Noise Amp ER,152,-145,75,30,8,3,0,26,0,0,0,0,-1--1--1,0-0-0,|12|I|0-0-255,0,0,0,0,0,0
+10,96,Noise Amp IR,533,-141,75,30,8,3,0,26,0,0,0,0,-1--1--1,0-0-0,|12|I|0-0-255,0,0,0,0,0,0
+10,97,Noise Amp RR,879,-138,75,30,8,3,0,26,0,0,0,0,-1--1--1,0-0-0,|12|I|0-0-255,0,0,0,0,0,0
+10,98,Noise Amp ED,466,283,75,30,8,3,0,26,0,0,0,0,-1--1--1,0-0-0,|12|I|0-0-255,0,0,0,0,0,0
+10,99,Noise Amp ID,808,283,75,30,8,3,0,26,0,0,0,0,-1--1--1,0-0-0,|12|I|0-0-255,0,0,0,0,0,0
+10,100,Noise Amp RD,1161,284,75,30,8,3,0,26,0,0,0,0,-1--1--1,0-0-0,|12|I|0-0-255,0,0,0,0,0,0
+1,101,95,43,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,102,96,44,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,103,97,45,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,104,46,95,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,105,46,96,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,106,46,97,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,107,98,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,108,99,4,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,109,100,7,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,110,33,99,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,111,33,98,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,112,33,100,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,113,Noise Amp ED,469,625,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,114,Noise Amp ID,813,627,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,115,Noise Amp RD,1164,628,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,116,113,64,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,117,114,65,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,118,115,66,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,119,IV for Noise,1401,247,75,30,8,3,0,0,-1,0,0,0,0,0,0,0,0,0
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*MCMC
+$192-192-192,0,Times New Roman|16||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,S MCMC payoff G EIR,927,-207,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,2,Exposed,1106,-206,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,3,Exposed Data,737,-202,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,4,Exposed Data Variance,1495,-474,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,5,Infected,1110,-270,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,6,Infected Data,737,-258,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,7,Infected Data Variance,734,-475,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,8,Recovered,1106,-139,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,9,Recovered Data,742,-126,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,10,Recovered Data Variance,1151,-322,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,11,2,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,12,5,1,1,0,0,0,0,128,0,-1--1--1,,1|(1035,-249)|
+1,13,8,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,14,9,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,15,6,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,16,3,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,17,S MCMC payoff G IR,928,-8,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,18,Infected,1093,42,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,19,Infected Data,725,51,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,20,18,17,1,0,0,0,0,128,0,-1--1--1,,1|(1033,15)|
+1,21,19,17,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,22,S MCMC payoff G I,930,98,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,23,Exposed Data STD,835,-321,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,24,Infected Data STD,927,-101,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,25,Recovered Data STD,995,-325,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,26,25,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,27,23,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,28,24,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,29,24,17,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,30,S MCMC payoff S EIR,313,-205,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,31,Exposed,492,-204,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,32,Exposed Data,121,-244,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,33,Infected,496,-268,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,34,Infected Data,113,-103,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,35,Recovered,492,-137,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,36,Recovered Data,118,-180,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,37,31,30,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,38,33,30,1,0,0,0,0,128,0,-1--1--1,,1|(421,-247)|
+1,39,35,30,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,40,36,30,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,41,34,30,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,42,32,30,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,43,S MCMC payoff S IR,314,-6,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,44,Infected,476,52,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,45,44,43,1,0,0,0,0,128,0,-1--1--1,,1|(416,19)|
+10,46,S MCMC payoff S I,316,100,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,47,Infected Recovered Data,1337,998,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,48,S MCMC payoff P EIR,1547,-204,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,49,Exposed,1726,-203,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,50,Exposed Data,1338,-201,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,51,Infected,1730,-267,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,52,Infected Data,1335,-260,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,53,Recovered,1726,-136,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,54,Recovered Data,1341,-142,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,55,49,48,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,56,51,48,1,0,0,0,0,128,0,-1--1--1,,1|(1655,-246)|
+1,57,53,48,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,58,54,48,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,59,52,48,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,60,50,48,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,61,S MCMC payoff P IR,1548,-5,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,62,Infected,1716,23,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,63,Infected Data,1336,44,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,64,62,61,1,0,0,0,0,128,0,-1--1--1,,1|(1653,6)|
+1,65,63,61,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,66,S MCMC payoff P I,1550,101,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,67,Infected Recovered,1340,914,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,68,Exposed Data STD,1455,-318,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,69,Infected Data STD,1547,-98,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,70,Recovered Data STD,1615,-322,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,71,Infected Recovered Data STD,1528,905,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,72,Unit Person,1098,-73,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,73,72,1,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,74,72,17,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,75,Unit Person,1077,135,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,76,75,22,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,77,Unit Person,1733,-45,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,78,77,48,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,79,77,61,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,80,77,66,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,81,F MCMC payoff S EIR,317,422,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,82,F MCMC payoff S IR,318,621,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,83,F MCMC payoff S I,320,727,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,84,Exposure Rate Data,145,331,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,85,84,81,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,86,Infection Rate Data,150,393,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,87,86,81,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,88,Recovery Rate Data,145,474,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,89,88,81,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,90,Infection Rate Data,125,677,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,91,90,82,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,92,F MCMC payoff G EIR,930,431,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,93,F MCMC payoff G IR,931,630,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,94,F MCMC payoff G I,933,736,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,95,Exposure Rate Data,758,340,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,96,95,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,97,Exposure Rate Data STD,1034,274,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,98,97,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,99,Infection Rate Data,763,402,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,100,99,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,101,Infection Rate Data STD,930,535,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,102,101,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,103,Recovery Rate Data,758,483,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,104,103,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,105,Recovery Rate Data STD,847,274,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,106,105,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,107,101,93,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,108,Infection Rate Data,740,661,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,109,108,93,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,110,Unit Person per Day,1083,564,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,111,110,93,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,112,110,92,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,113,Unit Person per Day,1090,772,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,114,113,94,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,115,F MCMC payoff P EIR,1549,438,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,116,F MCMC payoff P IR,1550,637,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,117,F MCMC payoff P I,1552,743,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,118,Exposure Rate Data,1377,347,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,119,118,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,120,Exposure Rate Data STD,1653,281,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,121,Infection Rate Data,1382,409,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,122,121,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,123,Infection Rate Data STD,1549,542,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,124,Recovery Rate Data,1377,490,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,125,124,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,126,Recovery Rate Data STD,1466,281,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,127,Infection Rate Data,1370,662,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,128,127,116,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,129,Unit Person per Day,1707,541,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,130,Unit Person per Day,1723,744,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,131,129,115,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,132,129,116,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,133,130,117,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,134,Exposed Data STD Scaled,208,-324,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,135,134,30,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,136,Infected Data STD Scaled,313,-93,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,137,136,30,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,138,Recovered Data STD Scaled,400,-325,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,139,138,30,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,140,Unit Person,454,-79,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,141,140,30,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,142,140,43,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,143,136,43,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,144,Infected Recovered Data STD Scaled,1545,999,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,145,Unit Person,446,129,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,146,145,46,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,147,Recovery Rate Data STD Scaled,221,265,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,148,Exposure Rate Data STD Scaled,425,262,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,149,147,81,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,150,148,81,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,151,Infection Rate Data STD Scaled,317,524,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,152,151,81,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,153,151,82,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,154,Unit Person per Day,504,543,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,155,154,81,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,156,154,82,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,157,Unit Person per Day,516,737,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,158,157,83,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,159,88,82,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,160,Recovery Rate Data STD Scaled,118,559,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,161,160,82,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,162,90,83,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,163,Infection Rate Data STD Scaled,131,777,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,164,163,83,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,165,103,93,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,166,Recovery Rate Data STD,742,567,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,167,166,93,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,168,108,94,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,169,Infection Rate Data STD,739,751,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,170,169,94,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,171,124,116,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,172,127,117,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,173,35,43,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,174,36,43,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,175,Recovered Data STD Scaled,96,-8,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,176,175,43,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,177,44,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,178,Infected Data,106,71,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,179,178,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,180,Infected Data STD Scaled,104,148,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,181,180,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,182,8,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,183,9,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,184,Recovered Data STD,728,-50,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,185,184,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,186,18,22,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,187,19,22,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,188,Infected Data STD,725,153,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,189,188,22,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,190,53,61,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,191,54,61,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,192,62,66,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,193,63,66,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,194,Exposure Rate,520,460,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,195,194,81,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,196,Infection Rate,521,393,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,197,196,81,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,198,Recovery Rate,512,331,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,199,198,81,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,200,Infection Rate,525,664,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,201,200,82,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,202,Recovery Rate,519,601,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,203,202,82,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,204,200,83,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,205,Exposure Rate,1097,427,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,206,205,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,207,Infection Rate,1077,351,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,208,207,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,209,Recovery Rate,1100,502,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,210,209,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,211,Infection Rate,1109,677,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,212,211,93,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,213,209,93,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,214,211,94,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,215,Exposure Rate,1717,489,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,216,215,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,217,Infection Rate,1716,418,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,218,217,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,219,Recovery Rate,1715,345,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,220,219,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,221,Infection Rate,1714,663,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,222,221,116,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,223,Recovery Rate,1364,597,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,224,223,116,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,225,221,117,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,226,227,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,227,Time,314,47,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,228,227,43,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,229,Time,313,-152,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,230,229,30,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,231,Time,927,-154,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,232,231,1,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,233,Time,928,45,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,234,233,17,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,235,233,22,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,236,Time,1547,-151,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,237,236,48,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,238,Time,1548,48,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,239,238,61,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,240,238,66,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,241,Time,317,475,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,242,241,81,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,243,Time,318,674,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,244,243,82,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,245,243,83,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,246,Time,930,484,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,247,246,92,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,248,Time,931,683,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,249,248,93,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,250,248,94,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,251,Time,1549,491,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,252,251,115,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,253,Time,1550,690,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,254,253,116,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,255,253,117,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,256,178,43,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Scaling of Variance 
+$192-192-192,0,Times New Roman|16||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Infected,126,90,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,2,Infected Data,366,90,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,3,Infected Data STD,245,222,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,4,Exposed,561,89,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,5,Exposed Data,786,91,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,6,Exposed Data STD,675,223,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,7,Recovered,970,91,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,8,Recovered Data,1208,91,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,9,Recovered Data STD,1089,218,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,10,Infected Recovered,1421,92,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,11,Infected Recovered Data,1656,92,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,12,Infected Recovered Data STD,1523,216,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,13,Infection Rate Data,383,356,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,14,Infection Rate Data STD,248,490,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,15,Exposure Rate Data,787,354,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,16,Exposure Rate Data STD,676,496,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,17,Recovery Rate Data,1211,359,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,18,Recovery Rate Data STD,1090,500,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,19,Exposed Data STD,458,614,75,30,8,3,1,0,0,0,0,0,0,0,0,0,0,0
+10,20,Infected Data STD,934,678,75,30,8,3,1,0,0,0,0,0,0,0,0,0,0,0
+10,21,Recovered Data STD,1254,808,75,30,8,3,1,0,0,0,0,0,0,0,0,0,0,0
+10,22,Infected Recovered Data STD,1150,669,75,30,8,3,1,0,0,0,0,0,0,0,0,0,0,0
+10,23,Exposed Data Variance,512,673,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,24,23,19,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,25,Infected Data Variance,813,674,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,26,25,20,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,27,Recovered Data Variance,1306,742,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,28,27,21,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,29,INFECTED RECOVERED DATA VARIANCE,1070,749,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,30,29,22,0,1,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,31,Exposed Data Variance Scaled,249,158,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,32,Infected Data Variance Scaled,579,159,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,33,Recovered Data Variance Scaled,934,160,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,34,INFECTED RECOVERED DATA VARIANCE Scaled,755,242,75,30,8,3,0,8,0,0,0,0,-1--1--1,0-0-0,|12||0-0-0,0,0,0,0,0,0
+1,35,32,34,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,36,33,34,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,37,Exposed Data STD Scaled,250,263,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,38,Infected Data STD Scaled,507,264,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,39,Recovered Data STD Scaled,934,263,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,40,Infected Recovered Data STD Scaled,756,322,75,30,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,41,34,40,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,42,33,39,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,43,32,38,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,44,31,37,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,45,Exposure Rate Data Variance Scaled,248,526,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,46,Infection Rate Data Variance Scaled,583,527,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,47,Recovery Rate Data Variance Scaled,940,526,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,48,Exposure Rate Data STD Scaled,249,629,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,49,Infection Rate Data STD Scaled,584,632,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,50,Recovery Rate Data STD Scaled,941,632,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+1,51,47,50,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,52,46,49,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,53,45,48,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,54,Noise Amp D,579,65,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,55,Exposed,125,207,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,56,55,31,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,57,Infected,431,210,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,58,57,32,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,59,Recovered,1045,212,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,60,59,33,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,61,scaling constant F,1108,932,75,30,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,62,scaling constant S,617,583,75,30,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,63,Min Variance S,1297,73,75,30,8,131,0,10,0,0,0,0,-1--1--1,0-0-0,|20||0-0-255,0,0,0,0,0,0
+10,64,Min Variance S,302,99,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,65,Min Variance S,1001,105,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,66,Min Variance S,654,105,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+1,67,64,31,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,68,66,32,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,69,65,33,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,70,Min Variance F,1297,380,75,30,8,131,0,10,0,0,0,0,-1--1--1,0-0-0,|20||0-0-255,0,0,0,0,0,0
+10,71,Min Variance F,310,476,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,72,Min Variance F,1005,478,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+10,73,Min Variance F,658,478,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|10||128-128-128,0,0,0,0,0,0
+1,74,71,45,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,75,73,46,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,76,72,47,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,77,Exposed Data STD,258,836,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,78,Exposure Rate,93,579,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,79,78,45,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,80,Infection Rate,460,580,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,81,80,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,82,Recovery Rate,822,580,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,83,82,47,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,84,Drive Variance in ER,103,473,75,30,8,2,1,11,-1,0,0,0,128-128-128,0-0-0,|14||128-128-128,0,0,0,0,0,0
+10,85,Exposure Rate Data Variance,152,421,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,86,Total Population,1462,338,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,87,TIME STEP,1295,432,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,88,Noise Amp ED,248,70,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,89,Noise Amp ID,578,71,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,90,Noise Amp RD,933,71,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,91,Noise Amp ED,248,440,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,92,Noise Amp ID,582,441,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,93,Noise Amp RD,941,442,75,30,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+1,94,88,31,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,95,89,32,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,96,90,33,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,97,93,47,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,98,92,46,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,99,91,45,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Negative Binomial
+$192-192-192,0,Times New Roman|16||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,r,167,100,75,30,8,3,0,2,0,0,0,0,-1--1--1,0-0-0,|||0-0-255,0,0,0,0,0,0
+10,2,S NB Payoff EIR,425,252,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,3,S NB Payoff IR,856,251,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,4,Infected,760,274,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,5,4,3,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,6,Infected Data,996,274,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,7,6,3,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,8,Unit Person,987,192,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,9,8,3,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,10,r,762,194,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,11,10,3,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,12,Exposed,322,324,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,13,12,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,14,Exposed Data,560,324,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,15,14,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,16,Infected,289,276,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,17,16,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,18,Infected Data,556,271,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,19,18,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,20,Recovered,351,383,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,21,20,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,22,Recovered Data,509,383,75,30,8,130,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,23,22,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,24,Unit Person,542,193,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,25,24,2,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,26,r,301,195,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,27,26,2,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,28,S NB Payoff I,1325,251,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,29,Unit Person,1457,193,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,30,29,28,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,31,r,1232,195,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,32,31,28,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,33,Infected Recovered,1699,249,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,34,Infected Recovered Data,1686,290,75,30,8,130,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,35,S MCMC payoff NB EIR,426,497,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,36,S MCMC payoff NB IR,857,491,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+10,37,S MCMC payoff NB I,1326,489,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+1,38,2,35,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,39,3,36,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,40,28,37,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,41,r,301,619,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,42,Exposure Rate Data,574,806,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,43,Infection Rate Data,584,688,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,44,Recovery Rate Data,585,750,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,45,Unit Person per Day,563,622,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,46,F NB Payoff IR,856,679,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,47,r,732,622,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,48,47,46,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,49,F MCMC payoff NB IR,857,924,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+1,50,46,49,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,51,Exposure Rate Data,1665,364,75,30,8,2,1,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,52,Infection Rate Data,1015,691,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,53,52,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,54,Recovery Rate Data,1016,753,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+10,55,Unit Person per Day,994,625,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,56,55,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,57,F NB Payoff I,1329,681,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,58,r,1205,624,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,59,58,57,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,60,F MCMC payoff NB I,1330,926,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+1,61,57,60,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,62,Unit Person per Day,1467,627,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,63,62,57,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,64,F NB Payoff EIR,436,680,75,30,8,131,0,0,0,0,0,0,0,0,0,0,0,0
+10,65,F MCMC payoff NB EIR,436,933,75,30,8,131,0,26,0,0,0,0,-1--1--1,0-0-0,|20|B|255-0-0,0,0,0,0,0,0
+1,66,64,65,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,67,45,64,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,68,41,64,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,69,43,64,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,70,44,64,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+1,71,42,64,0,0,0,0,0,128,0,-1--1--1,,1|(0,0)|
+10,72,Recovered,769,348,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,73,72,3,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,74,Recovered Data,984,344,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,75,74,3,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,76,Infected,1189,271,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,77,76,28,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,78,Infected Data,1471,272,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,79,78,28,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+1,80,54,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,81,Infection Rate Data,1466,737,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,82,81,57,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,83,Exposure Rate,296,830,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,84,83,64,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,85,Infection Rate,297,767,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,86,85,64,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,87,Recovery Rate,299,703,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,88,87,64,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,89,Infection Rate,735,796,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,90,89,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,91,Recovery Rate,739,719,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,92,91,46,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,93,Infection Rate,1214,729,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,94,93,57,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,95,Time,426,555,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,96,95,35,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,97,Time,857,544,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,98,97,36,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,99,Time,1326,542,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,100,99,37,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,101,Time,436,994,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,102,101,65,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,103,Time,857,977,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,104,103,49,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+10,105,Time,1330,979,75,30,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|||128-128-128,0,0,0,0,0,0
+1,106,105,60,0,0,0,0,0,64,0,-1--1--1,,1|(0,0)|
+///---\\\
+:L<%^E!@
+4:Time
+5:IV for Noise
+9:mcmc
+19:100,1
+24:0
+25:100
+26:100
+57:1
+54:0
+55:0
+82:0
+86:0
+59:0
+56:0
+58:0
+71:0
+44:65001
+46:1
+45:5
+49:0
+50:0
+51:
+52:
+53:
+43:wrong_optima1.csv
+47:naive
+48:
+22:$,Dollar,Dollars,$s
+22:Day,Days
+22:Hour,Hours
+22:Month,Months
+22:Person,People,Persons
+22:Unit,Units
+22:Week,Weeks
+22:Year,Years
+11:opt_mcmc.voc
+12:payoff_mcmc.vpd
+13:data.vdf
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:4
+41:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:0
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:wrong_optima1.csv
+103:8,8,8,3,8

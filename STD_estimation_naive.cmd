@@ -1,6 +1,6 @@
 ! Estimation
 SPECIAL>NOINTERACTION
-SPECIAL>LOADMODEL|SEIR_estimation.mdl
+SPECIAL>LOADMODEL|STD_SEIR_estimation.mdl
 
 ! Naive Powell
 ! Estimate should find the right optimum
