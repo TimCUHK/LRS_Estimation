@@ -1,8 +1,0 @@
-*Comment: Used in Kalman Filtering
-susceptible/susceptible drive variance/susceptible initial variance
-exposed/exposed drive variance/exposed initial variance
-infected/infected drive variance/infected initial variance
-recovered/recovered drive variance/recovered initial variance
-susceptible | exposed / CovSE
-exposed | infected / CovEI
-infected | recovered / CovIR
